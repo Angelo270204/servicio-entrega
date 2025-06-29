@@ -1,0 +1,177 @@
+<section class="historial-section">
+  <div class="container">
+    <div class="historial-header">
+      <h1 class="historial-title">Historial de Envíos</h1>
+      <button class="btn btn--secondary" routerLink="/">
+        <span class="btn__icon">🏠</span> Volver al Inicio
+      </button>
+    </div>
+
+    <div class="historial-content">
+      <ng-container *ngIf="historialEnvios$ | async as envios; else loading">
+        <div *ngIf="envios.length === 0" class="empty-state">
+          <div class="empty-icon">📦</div>
+          <h2>No tienes envíos registrados</h2>
+          <p>Cuando crees tu primer paquete, aparecerá aquí el historial de envíos.</p>
+          <button class="btn btn--primary" routerLink="/crear-paquete">
+            Crear mi Primer Paquete
+          </button>
+        </div>
+
+        <div *ngIf="envios.length > 0" class="envios-grid">
+          <article 
+            class="envio-card" 
+            *ngFor="let envio of envios"
+            (click)="verDetalles(envio)">
+            
+            <div class="envio-header">
+              <div class="envio-info">
+                <h3 class="envio-id">{{ envio.numeroSeguimiento }}</h3>
+                <p class="envio-fecha">{{ formatDate(envio.fechaEnvio) }}</p>
+              </div>
+              <div class="envio-estado" [class]="getEstadoClass(envio.estado)">
+                {{ getEstadoText(envio.estado) }}
+              </div>
+            </div>
+
+            <div class="envio-details">
+              <div class="detail-item">
+                <span class="detail-label">Tipo de Paquete:</span>
+                <span class="detail-value">{{ envio.paquete.tipo === 'small' ? 'Pequeño' : envio.paquete.tipo === 'medium' ? 'Mediano' : 'Grande' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Productos:</span>
+                <span class="detail-value">{{ getTotalProductos(envio) }} artículos</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Total:</span>
+                <span class="detail-value price">S/ {{ getPrecioTotal(envio).toFixed(2) }}</span>
+              </div>
+            </div>
+
+            <div class="envio-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" 
+                     [style.width]="envio.estado === 'enviado' ? '33%' : envio.estado === 'en_transito' ? '66%' : '100%'">
+                </div>
+              </div>
+              <div class="progress-labels">
+                <span [class.active]="envio.estado === 'enviado' || envio.estado === 'en_transito' || envio.estado === 'entregado'">Enviado</span>
+                <span [class.active]="envio.estado === 'en_transito' || envio.estado === 'entregado'">En Tránsito</span>
+                <span [class.active]="envio.estado === 'entregado'">Entregado</span>
+              </div>
+            </div>
+
+            <button class="btn btn--outline ver-detalles-btn">
+              Ver Detalles Completos
+            </button>
+          </article>
+        </div>
+      </ng-container>
+
+      <ng-template #loading>
+        <div class="loading-state">
+          <div class="loading-spinner">⏳</div>
+          <p>Cargando historial de envíos...</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Modal de detalles -->
+    <div *ngIf="selectedEnvio" class="modal-overlay" (click)="cerrarDetalles()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Detalles del Envío</h2>
+          <button class="modal-close" (click)="cerrarDetalles()">×</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="envio-detail-section">
+            <h3>Información del Envío</h3>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="detail-label">Número de Seguimiento:</span>
+                <span class="detail-value">{{ selectedEnvio.numeroSeguimiento }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Fecha de Envío:</span>
+                <span class="detail-value">{{ formatDate(selectedEnvio.fechaEnvio) }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Estado Actual:</span>
+                <span class="detail-value" [class]="getEstadoClass(selectedEnvio.estado)">
+                  {{ getEstadoText(selectedEnvio.estado) }}
+                </span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Dirección de Envío:</span>
+                <span class="detail-value">{{ selectedEnvio.paquete.direccionEnvio }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="envio-detail-section">
+            <h3>Productos en el Paquete</h3>
+            <div class="productos-list">
+              <div class="producto-item" *ngFor="let producto of selectedEnvio.paquete.productos">
+                <img [src]="producto.imagenUrl" [alt]="producto.nombre" class="producto-image">
+                <div class="producto-info">
+                  <h4>{{ producto.nombre }}</h4>
+                  <p class="producto-precio">S/ {{ producto.precio }}</p>
+                  <span class="producto-dimension">{{ producto.dimension === 'small' ? 'Pequeño' : producto.dimension === 'medium' ? 'Mediano' : 'Grande' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="envio-detail-section">
+            <h3>Personalización</h3>
+            <div class="personalizacion-info">
+              <p><strong>Color del Paquete:</strong> {{ selectedEnvio.paquete.personalizacion.color }}</p>
+              <p><strong>Evento:</strong> {{ selectedEnvio.paquete.personalizacion.evento === 'none' ? 'Ninguno' : selectedEnvio.paquete.personalizacion.eventoPersonalizado || selectedEnvio.paquete.personalizacion.evento }}</p>
+              <p *ngIf="selectedEnvio.paquete.personalizacion.mensaje">
+                <strong>Mensaje:</strong> "{{ selectedEnvio.paquete.personalizacion.mensaje }}"
+              </p>
+            </div>
+          </div>
+
+          <div class="envio-detail-section">
+            <h3>Seguimiento del Envío</h3>
+            <div class="tracking-timeline">
+              <div class="timeline-item" 
+                   *ngFor="let actualizacion of selectedEnvio.actualizaciones"
+                   [class.completed]="true">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <h4>{{ actualizacion.descripcion }}</h4>
+                  <p class="timeline-date">{{ formatDate(actualizacion.fecha) }}</p>
+                  <p class="timeline-location" *ngIf="actualizacion.ubicacion">
+                    📍 {{ actualizacion.ubicacion }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="envio-detail-section total-section">
+            <h3>Resumen de Costos</h3>
+            <div class="cost-summary">
+              <div class="cost-item">
+                <span>Subtotal ({{ selectedEnvio.paquete.productos.length }} productos):</span>
+                <span>S/ {{ selectedEnvio.paquete.precioTotal.toFixed(2) }}</span>
+              </div>
+              <div class="cost-item">
+                <span>Envío:</span>
+                <span>Gratis</span>
+              </div>
+              <div class="cost-item total">
+                <span><strong>Total:</strong></span>
+                <span><strong>S/ {{ selectedEnvio.paquete.precioTotal.toFixed(2) }}</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

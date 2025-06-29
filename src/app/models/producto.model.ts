@@ -4,4 +4,5 @@ export interface Producto {
   imagenUrl: string;
   precio: number;
   categoria?: string;
+  dimension: 'small' | 'medium' | 'large';
 }

@@ -4,7 +4,6 @@ import { ProductoService } from "../../services/producto";
 import { Observable } from "rxjs";
 import { ProductCard } from "../product-card/product-card";
 import { CommonModule } from "@angular/common";
-
 @Component({
   selector: "app-product-list",
   imports: [ProductCard, CommonModule],
