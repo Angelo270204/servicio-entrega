@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { PaqueteService } from '../services/paquete.service';
-import { HistorialEnvio } from '../models/paquete.model';
+import { PaqueteService } from '../../services/paquete.service';
+import { HistorialEnvio } from '../../models/paquete.model';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -74,9 +74,9 @@ export class CrearPaqueteComponent {
 
   get packageLimits() {
     const limits = {
-      small: { maxProductos: 3, dimensiones: ['pequeños'] },
-      medium: { maxProductos: 7, dimensiones: ['pequeños', 'medianos'] },
-      large: { maxProductos: 10, dimensiones: ['pequeños', 'medianos', 'grandes'] }
+      small: { maxProductos: 3, dimensiones: ['small'] },
+      medium: { maxProductos: 7, dimensiones: ['small', 'medium'] },
+      large: { maxProductos: 10, dimensiones: ['small', 'medium', 'large'] }
     };
     return this.selectedPackageType ? limits[this.selectedPackageType] : null;
   }

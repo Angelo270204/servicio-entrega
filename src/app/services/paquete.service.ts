@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Paquete, HistorialEnvio } from '../models/paquete.model';
 import { Producto } from '../models/producto.model';
 
@@ -114,7 +115,8 @@ export class PaqueteService {
     this.paquetesSubject.next(paquetesActuales);
     this.guardarEnLocalStorage();
 
-    return new BehaviorSubject(nuevoPaquete).asObservable();
+    // Simula una respuesta del backend con un pequeño retraso
+    return of(nuevoPaquete).pipe(delay(1000));
   }
 
   enviarPaquete(paqueteId: string, direccionEnvio: string): Observable<HistorialEnvio> {
@@ -155,7 +157,8 @@ export class PaqueteService {
     // Simular actualizaciones de seguimiento
     this.simularActualizacionesSeguimiento(nuevoEnvio.id);
 
-    return new BehaviorSubject(nuevoEnvio).asObservable();
+    // Simula una respuesta de envío exitosa
+    return of(nuevoEnvio).pipe(delay(1000));
   }
 
   private simularActualizacionesSeguimiento(envioId: string) {
