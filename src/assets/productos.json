@@ -2,7 +2,7 @@
   {
     "id": "1",
     "nombre": "Echo Dot (5ta Gen)",
-    "imagenUrl": "https://mercury.vtexassets.com/arquivos/ids/20551409/ALEXA5TAGE.jpg?v=638795989110500000",
+    "imagenUrl": "https://oechsle.vteximg.com.br/arquivos/ids/13266333/imageUrl_2.jpg?v=638085823720570000",
     "precio": 49.99,
     "categoria": "Electrónica",
     "dimension": "small"
@@ -26,7 +26,7 @@
   {
     "id": "4",
     "nombre": "Samsung Galaxy S23",
-    "imagenUrl": "https://media.falabella.com/falabellaPE/134146514_01/w=800,h=800,fit=pad",
+    "imagenUrl": "https://images-cdn.ubuy.co.id/6604193ee20b1622b516efcd-samsung-galaxy-s23-5g-sm-s911b-ds-128gb.jpg",
     "precio": 799.99,
     "categoria": "Celulares",
     "dimension": "small"
@@ -34,7 +34,7 @@
   {
     "id": "5",
     "nombre": "Instant Pot Duo 7-en-1",
-    "imagenUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaUC_C9mlfdg2uEypxsP8cBjZytMZnNC1Lvw&s",
+    "imagenUrl": "https://m.media-amazon.com/images/I/71lONZDrnyL.jpg",
     "precio": 89.99,
     "categoria": "Cocina",
     "dimension": "large"
@@ -82,7 +82,7 @@
   {
     "id": "11",
     "nombre": "Mochila Samsonite",
-    "imagenUrl": "https://m.media-amazon.com/images/I/81p1L85KinL._AC_SL1500_.jpg",
+    "imagenUrl": "https://www.lacuracao.pe/media/catalog/product/1/4/14732610411cnu_1.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=700&width=700&canvas=700:700",
     "precio": 59.99,
     "categoria": "Accesorios",
     "dimension": "medium"
@@ -90,7 +90,7 @@
   {
     "id": "12",
     "nombre": "Cafetera Nespresso Vertuo",
-    "imagenUrl": "https://m.media-amazon.com/images/I/71Q9d6N7xkL._AC_SL1500_.jpg",
+    "imagenUrl": "https://m.media-amazon.com/images/I/61pUe7MOzlL._AC_SL1500_.jpg",
     "precio": 179.0,
     "categoria": "Cocina",
     "dimension": "large"
@@ -106,7 +106,7 @@
   {
     "id": "14",
     "nombre": "Teclado Mecánico Corsair",
-    "imagenUrl": "https://m.media-amazon.com/images/I/71Ck3W8HPUL._AC_SL1500_.jpg",
+    "imagenUrl": "https://oechsle.vteximg.com.br/arquivos/ids/7332694/image-b722027ce79e4beb89648937e0276f31.jpg?v=637811067969770000",
     "precio": 129.99,
     "categoria": "Computadoras",
     "dimension": "medium"
@@ -114,7 +114,7 @@
   {
     "id": "15",
     "nombre": "Cámara Canon EOS R50",
-    "imagenUrl": "https://m.media-amazon.com/images/I/71nQnHX8SQL._AC_SL1500_.jpg",
+    "imagenUrl": "https://lenz.pe/cdn/shop/files/Camara-Mirrorless-EOS-R50-Lente-RF-S-18-45mm-f4_5-6_3-IS-STM.jpg?v=1707717382&width=2048",
     "precio": 699.99,
     "categoria": "Fotografía",
     "dimension": "medium"

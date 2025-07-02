@@ -18,6 +18,20 @@
           </button>
         </div>
 
+        <!-- Controles de ordenamiento -->
+        <div class="historial-sort-bar" *ngIf="envios.length > 0" style="margin-bottom: 20px;">
+          <label>
+            Ordenar por:
+            <select [(ngModel)]="sortBy" (change)="ordenarEnvios(envios)">
+              <option value="todos">Todos Paquetes</option>
+              <option value="fecha">Fecha</option>
+              <option value="productos">Cantidad de Productos</option>
+              <option value="precio">Precio Total</option>
+              <option value="dimension">Tamaño del Paquete</option>
+            </select>
+          </label>
+        </div>
+
         <div *ngIf="envios.length > 0" class="envios-grid">
           <article 
             class="envio-card" 

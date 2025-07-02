@@ -1,25 +1,31 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms'; 
 import { PaqueteService } from '../../services/paquete.service';
 import { HistorialEnvio } from '../../models/paquete.model';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-historial-envios',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule], 
   templateUrl: './historial-envios.html',
   styleUrls: ['./historial-envios.scss']
 })
 export class HistorialEnviosComponent implements OnInit {
   private paqueteService = inject(PaqueteService);
-  
-  historialEnvios$: Observable<HistorialEnvio[]> = this.paqueteService.obtenerHistorialEnvios();
+
   selectedEnvio: HistorialEnvio | null = null;
+  sortBy: 'todos'|'fecha' | 'productos' | 'precio' | 'dimension' = 'fecha';
+  sortDirection: 'asc' | 'desc' = 'desc';
+  private enviosSubject = new BehaviorSubject<HistorialEnvio[]>([]);
+  historialEnvios$ = this.enviosSubject.asObservable();
 
   ngOnInit() {
-    // Componente inicializado
+    this.paqueteService.obtenerHistorialEnvios().subscribe(envios => {
+      this.ordenarEnvios(envios);
+    });
   }
 
   verDetalles(envio: HistorialEnvio) {
@@ -64,5 +70,43 @@ export class HistorialEnviosComponent implements OnInit {
 
   getPrecioTotal(envio: HistorialEnvio): number {
     return envio.paquete.precioTotal;
+  }
+
+  ordenarEnvios(envios: HistorialEnvio[]) {
+    let sorted = [...envios];
+    if (this.sortBy === 'todos') {
+      // No ordenar, solo mostrar todos como están
+      this.enviosSubject.next(sorted);
+      return;
+    }
+    switch (this.sortBy) {
+      case 'fecha':
+        sorted.sort((a, b) => this.sortDirection === 'asc'
+          ? new Date(a.fechaEnvio).getTime() - new Date(b.fechaEnvio).getTime()
+          : new Date(b.fechaEnvio).getTime() - new Date(a.fechaEnvio).getTime());
+        break;
+      case 'productos':
+        sorted.sort((a, b) => this.sortDirection === 'asc'
+          ? a.paquete.productos.length - b.paquete.productos.length
+          : b.paquete.productos.length - a.paquete.productos.length);
+        break;
+      case 'precio':
+        sorted.sort((a, b) => this.sortDirection === 'asc'
+          ? a.paquete.precioTotal - b.paquete.precioTotal
+          : b.paquete.precioTotal - a.paquete.precioTotal);
+        break;
+      case 'dimension':
+        const order = { small: 1, medium: 2, large: 3 };
+        sorted.sort((a, b) => this.sortDirection === 'asc'
+          ? order[a.paquete.tipo] - order[b.paquete.tipo]
+          : order[b.paquete.tipo] - order[a.paquete.tipo]);
+        break;
+    }
+    this.enviosSubject.next(sorted);
+  }
+
+  toggleSortDirection() {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.historialEnvios$.subscribe(envios => this.ordenarEnvios(envios));
   }
 }

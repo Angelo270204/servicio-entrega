@@ -65,7 +65,16 @@ export class CrearPaqueteComponent {
   }
 
   get canCreatePackage(): boolean {
-    return this.selectedColor !== '' && this.direccionEnvio.trim() !== '';
+    return (
+      this.selectedColor !== '' &&
+      this.direccionEnvio.trim() !== '' &&
+      this.selectedProducts.length > 0 &&
+      !!this.selectedPackageType &&
+      this.paqueteService.validarProductosParaPaquete(
+        this.selectedProducts,
+        this.selectedPackageType
+      ).valido
+    );
   }
 
   get totalPrice(): number {
@@ -162,9 +171,7 @@ export class CrearPaqueteComponent {
     if (!this.canCreatePackage || !this.selectedPackageType) {
       return;
     }
-
     this.isCreating = true;
-
     try {
       const paqueteData = {
         tipo: this.selectedPackageType,
@@ -177,12 +184,14 @@ export class CrearPaqueteComponent {
         }
       };
 
+      console.log('Creando paquete...', paqueteData);
       const paquete = await this.paqueteService.crearPaquete(paqueteData).toPromise();
-      
+      console.log('Paquete creado:', paquete);
+
       if (paquete) {
-        // Enviar el paquete inmediatamente
         const envio = await this.paqueteService.enviarPaquete(paquete.id, this.direccionEnvio).toPromise();
-        
+        console.log('Envío realizado:', envio);
+
         this.createdPackageId = paquete.id;
         this.showConfirmation = true;
         this.step = 6;

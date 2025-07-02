@@ -444,6 +444,34 @@
     }
   }
 
+  .historial-sort-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+
+    label {
+      color: #232f3e;
+      font-weight: 500;
+      margin-right: 8px;
+    }
+
+    select {
+      padding: 8px 16px;
+      border: 1px solid #d5d9d9;
+      border-radius: 4px;
+      background: #fff;
+      color: #232f3e;
+      font-size: 1rem;
+      margin-left: 8px;
+      transition: border-color 0.2s;
+      outline: none;
+
+      &:focus {
+        border-color: #ff9900;
+      }
+    }
+  }
+
   @media (max-width: 768px) {
     .historial-header {
       flex-direction: column;

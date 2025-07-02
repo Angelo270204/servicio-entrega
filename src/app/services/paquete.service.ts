@@ -109,14 +109,10 @@ export class PaqueteService {
       precioTotal: paquete.productos.reduce((total, producto) => total + producto.precio, 0),
       fechaEstimadaEntrega: this.calcularFechaEstimadaEntrega()
     };
-
-    const paquetesActuales = this.paquetesSubject.value;
-    paquetesActuales.push(nuevoPaquete);
-    this.paquetesSubject.next(paquetesActuales);
+    const paquetes = [...this.paquetesSubject.value, nuevoPaquete];
+    this.paquetesSubject.next(paquetes);
     this.guardarEnLocalStorage();
-
-    // Simula una respuesta del backend con un pequeño retraso
-    return of(nuevoPaquete).pipe(delay(1000));
+    return of(nuevoPaquete).pipe(delay(1000)); // Simula retardo de red
   }
 
   enviarPaquete(paqueteId: string, direccionEnvio: string): Observable<HistorialEnvio> {
@@ -223,7 +219,7 @@ export class PaqueteService {
 
   private calcularFechaEstimadaEntrega(): Date {
     const fecha = new Date();
-    fecha.setDate(fecha.getDate() + Math.floor(Math.random() * 5) + 3); // 3-7 días
+    fecha.setDate(fecha.getDate() + Math.floor(Math.random() * 5) + 3);
     return fecha;
   }
 }
