@@ -1,19 +1,39 @@
 // scss/components/_package-creator.scss
 @use "sass:color"; // Importa el módulo de color de Sass
+@keyframes fadeInStep {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
-$amazon-orange: #FF9900;
-$amazon-dark-blue: #232F3E;
+.package-creator__step {
+  animation: fadeInStep 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+$amazon-orange: #ff9900;
+$amazon-dark-blue: #232f3e;
 $amazon-blue-link: #007185;
-$amazon-white: #FFFFFF;
+$amazon-white: #ffffff;
 $amazon-black: #000000;
-$amazon-light-grey-bg: #F0F2F2;
-$amazon-border-grey: #D5D9D9;
-$amazon-warning-bg: #FFF3CD;
+$amazon-light-grey-bg: #f0f2f2;
+$amazon-border-grey: #d5d9d9;
+$amazon-warning-bg: #fff3cd;
 $amazon-warning-text: #856404;
-$amazon-error-bg: #F8D7DA;
-$amazon-error-text: #721C24;
-$amazon-success-bg: #D4EDDA;
+$amazon-error-bg: #f8d7da;
+$amazon-error-text: #721c24;
+$amazon-success-bg: #d4edda;
 $amazon-success-text: #155724;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+body,
+.package-creator-section {
+  font-family: "Inter", "Amazon Ember", Roboto, Arial, sans-serif;
+}
 
 @mixin button-base {
   padding: 10px 20px;
@@ -21,7 +41,10 @@ $amazon-success-text: #155724;
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -42,7 +65,7 @@ $amazon-success-text: #155724;
 }
 
 body {
-  font-family: 'Amazon Ember', Roboto, Arial, sans-serif;
+  font-family: "Amazon Ember", Roboto, Arial, sans-serif;
   color: $amazon-black;
   background-color: $amazon-light-grey-bg;
   line-height: 1.6;
@@ -58,7 +81,7 @@ body {
     margin: 20px auto;
     padding: 20px;
     background-color: $amazon-white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
   }
 
@@ -89,7 +112,7 @@ body {
       max-width: 120px;
 
       &:not(:last-child)::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 15px;
         right: -50%;
@@ -148,7 +171,7 @@ body {
     border-radius: 8px;
     padding: 25px 30px;
     margin-bottom: 25px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
 
   .package-creator__step-title {
@@ -167,13 +190,13 @@ body {
     @include button-base;
     background-color: $amazon-orange;
     color: $amazon-black;
-    border-color: #FCD200;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-color: #fcd200;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     font-weight: bold;
 
     &:hover {
-      background-color: color.adjust($amazon-orange, $lightness: -5%);
-      border-color: color.adjust(#FCD200, $lightness: -5%);
+      background-color: darken($amazon-orange, 5%);
+      border-color: darken(#fcd200, 5%);
     }
   }
 
@@ -182,7 +205,7 @@ body {
     background-color: $amazon-white;
     color: $amazon-blue-link;
     border-color: $amazon-border-grey;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
     &:hover {
       background-color: $amazon-light-grey-bg;
@@ -224,18 +247,19 @@ body {
       border: 2px solid $amazon-border-grey;
       background-color: $amazon-white;
       color: $amazon-black;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
       &:hover:not(:disabled) {
         border-color: $amazon-orange;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        background-color: color.adjust($amazon-white, $lightness: 2%);
+
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        background-color: lighten($amazon-white, 2%);
       }
 
       &.selected {
         border-color: $amazon-orange;
         background-color: #fff8e1;
-        box-shadow: 0 2px 8px rgba(255,153,0,0.2);
+        box-shadow: 0 2px 8px rgba(255, 153, 0, 0.2);
       }
 
       .btn__icon {
@@ -318,18 +342,21 @@ body {
     background: #fff;
     border: 2px solid #e3e6e6;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 18px 12px 20px 12px;
     cursor: pointer;
-    transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+    transition:
+      box-shadow 0.2s,
+      border-color 0.2s,
+      background 0.2s;
     position: relative;
 
     &.selected {
       border-color: #ff9900;
-      box-shadow: 0 4px 16px rgba(255,153,0,0.10);
+      box-shadow: 0 4px 16px rgba(255, 153, 0, 0.1);
       background: #fffbe6;
     }
 
@@ -411,6 +438,11 @@ body {
   }
 
   .product-card-home__add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1rem;
     background: #febd69;
     color: #222;
     border: none;
@@ -445,14 +477,16 @@ body {
       font-weight: 500;
     }
 
-    .color-options, .event-options {
+    .color-options,
+    .event-options {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
       margin-bottom: 25px;
     }
 
-    .color-option, .event-option {
+    .color-option,
+    .event-option {
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -466,18 +500,66 @@ body {
       }
     }
 
+    // Paso 3: iconos en eventos
+    .event-options {
+      .event-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.08rem;
+        background: #f9f9f9;
+        border-radius: 6px;
+        padding: 10px 18px;
+        margin-bottom: 8px;
+        border: 1.5px solid #e3e6e6;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        cursor: pointer;
+
+        i {
+          font-size: 1.3em;
+          color: #ff9900;
+          margin-right: 4px;
+        }
+
+        input[type="radio"] {
+          margin-right: 8px;
+          accent-color: #ff9900;
+          transform: scale(1.2);
+        }
+
+        &:hover,
+        &.active,
+        input[type="radio"]:checked + i {
+          border-color: #ff9900;
+          background: #fffbe6;
+        }
+      }
+    }
+
     .color-circle {
-      width: 20px;
-      height: 20px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      border: 1px solid #ccc;
-      margin-right: 8px;
-      display: inline-block;
-      vertical-align: middle;
-      &.yellow { background-color: #FFEB3B; }
-      &.red { background-color: #F44336; }
-      &.blue { background-color: #2196F3; }
-      &.green { background-color: #4CAF50; }
+      border: 2px solid #ccc;
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      &.yellow {
+        background-color: #ffeb3b;
+      }
+      &.red {
+        background-color: #f44336;
+      }
+      &.blue {
+        background-color: #2196f3;
+      }
+      &.green {
+        background-color: #4caf50;
+      }
     }
 
     .event-option--other {
@@ -488,8 +570,10 @@ body {
         margin-left: 5px;
         font-size: 1rem;
         width: 150px;
-        box-shadow: inset 0 1px 2px rgba(0,0,0,0.07);
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
       }
       .input-text:focus {
         outline: none;
@@ -499,20 +583,89 @@ body {
     }
   }
 
-  // Message Card Options
+  // Paso 4: mensaje personalizado
+  .message-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.25rem;
+    color: #007185;
+    margin-bottom: 18px;
+    font-weight: 600;
+
+    i {
+      font-size: 1.5em;
+      color: #ff9900;
+    }
+  }
+
   .message-card-options {
-    label {
+    .message-checkbox {
       display: flex;
       align-items: center;
-      margin-bottom: 16px;
-      font-size: 1rem;
+      font-size: 1.08rem;
+      margin-bottom: 14px;
 
       input[type="checkbox"] {
-        transform: scale(1.1);
         margin-right: 8px;
-        accent-color: $amazon-orange;
+        accent-color: #ff9900;
+        transform: scale(1.15);
       }
     }
+
+    .message-area-wrapper {
+      position: relative;
+      transition: opacity 0.2s;
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+
+    .message-textarea {
+      width: 100%;
+      border: 2px dashed #ff9900;
+      background: #fffbe6;
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 1.08rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 90px;
+      margin-bottom: 6px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+
+      &:focus {
+        border-color: #f08804;
+        box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.13);
+        outline: none;
+      }
+    }
+
+    .message-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.98rem;
+      color: #666;
+      margin-top: 2px;
+
+      .message-limit {
+        color: #ff9900;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .message-tip {
+        color: #007185;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.95em;
+      }
+    }
+  }
 
     textarea.input-text {
       width: 100%;
@@ -524,8 +677,10 @@ body {
       margin-top: 10px;
       resize: vertical;
       min-height: 80px;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.07);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 
       &:focus {
         outline: none;
@@ -597,10 +752,10 @@ body {
         border: 1px solid $amazon-border-grey;
 
         .total-price {
-          font-size: 1.5rem;
+          font-size: 2rem;
           font-weight: bold;
           color: $amazon-orange;
-          margin: 0;
+          text-shadow: 0 2px 8px rgba(255, 153, 0, 0.12);
         }
       }
     }
@@ -690,7 +845,11 @@ body {
   }
 
   @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
       transform: translateY(0);
     }
     40% {
@@ -775,4 +934,3 @@ body {
       width: 100%;
     }
   }
-}

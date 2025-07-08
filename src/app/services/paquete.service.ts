@@ -16,6 +16,11 @@ export class PaqueteService {
   }
 
   private cargarDatosLocales() {
+    // Solo ejecuta si existe window y localStorage
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return;
+    }
+
     const paquetesGuardados = localStorage.getItem('paquetes');
     const historialGuardado = localStorage.getItem('historialEnvios');
 
@@ -46,7 +51,11 @@ export class PaqueteService {
     }
   }
 
+
   private guardarEnLocalStorage() {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return;
+    }
     localStorage.setItem('paquetes', JSON.stringify(this.paquetesSubject.value));
     localStorage.setItem('historialEnvios', JSON.stringify(this.historialSubject.value));
   }
@@ -76,7 +85,7 @@ export class PaqueteService {
     const productosIncompatibles = productos.filter(p => !limite.dimensionesPermitidas.includes(p.dimension));
     if (productosIncompatibles.length > 0) {
       errores.push(`Los siguientes productos no son compatibles con el paquete ${tipoPaquete}: ${productosIncompatibles.map(p => p.nombre).join(', ')}`);
-      
+
       // Sugerir tipo de paquete adecuado
       const dimensionMaxima = Math.max(...productos.map(p => {
         switch(p.dimension) {

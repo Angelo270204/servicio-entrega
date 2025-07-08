@@ -129,7 +129,10 @@
                 [disabled]="!isProductCompatible(producto)"
                 (click)="toggleProductSelection(producto); $event.stopPropagation()"
               >
-                {{ isProductSelected(producto) ? 'Quitar del Paquete' : 'Agregar al Paquete' }}
+                <i class="fa" [ngClass]="isProductSelected(producto) ? 'fa-check-circle' : 'fa-plus-circle'"></i>
+                <span>
+                  {{ isProductSelected(producto) ? 'Quitar del Paquete' : 'Agregar al Paquete' }}
+                </span>
               </button>
             </div>
           </article>
@@ -159,38 +162,43 @@
         <div class="color-options">
           <label class="color-option">
             <input type="radio" name="package-color" value="yellow" [(ngModel)]="selectedColor">
-            <span class="color-circle yellow"></span> Amarillo
+            <span class="color-circle yellow"><i class="fa fa-box"></i></span> Amarillo
           </label>
           <label class="color-option">
             <input type="radio" name="package-color" value="red" [(ngModel)]="selectedColor">
-            <span class="color-circle red"></span> Rojo
+            <span class="color-circle red"><i class="fa fa-box"></i></span> Rojo
           </label>
           <label class="color-option">
             <input type="radio" name="package-color" value="blue" [(ngModel)]="selectedColor">
-            <span class="color-circle blue"></span> Azul
+            <span class="color-circle blue"><i class="fa fa-box"></i></span> Azul
           </label>
           <label class="color-option">
             <input type="radio" name="package-color" value="green" [(ngModel)]="selectedColor">
-            <span class="color-circle green"></span> Verde
+            <span class="color-circle green"><i class="fa fa-box"></i></span> Verde
           </label>
         </div>
 
         <h3>¿Es para algún evento en particular? (Opcional)</h3>
         <div class="event-options">
           <label class="event-option">
-            <input type="radio" name="event-type" value="none" [(ngModel)]="selectedEvent"> Ninguno
+            <input type="radio" name="event-type" value="none" [(ngModel)]="selectedEvent">
+            <i class="fa fa-circle-notch"></i> Ninguno
           </label>
           <label class="event-option">
-            <input type="radio" name="event-type" value="birthday" [(ngModel)]="selectedEvent"> Cumpleaños
+            <input type="radio" name="event-type" value="birthday" [(ngModel)]="selectedEvent">
+            <i class="fa fa-cake-candles"></i> Cumpleaños
           </label>
           <label class="event-option">
-            <input type="radio" name="event-type" value="christmas" [(ngModel)]="selectedEvent"> Navidad
+            <input type="radio" name="event-type" value="christmas" [(ngModel)]="selectedEvent">
+            <i class="fa fa-tree"></i> Navidad
           </label>
           <label class="event-option">
-            <input type="radio" name="event-type" value="holiday" [(ngModel)]="selectedEvent"> Día Festivo
+            <input type="radio" name="event-type" value="holiday" [(ngModel)]="selectedEvent">
+            <i class="fa fa-umbrella-beach"></i> Día Festivo
           </label>
           <label class="event-option event-option--other">
-            <input type="radio" name="event-type" value="other" [(ngModel)]="selectedEvent"> Otro:
+            <input type="radio" name="event-type" value="other" [(ngModel)]="selectedEvent">
+            <i class="fa fa-star"></i> Otro:
             <input type="text"
                    class="input-text"
                    [(ngModel)]="customEvent"
@@ -212,26 +220,34 @@
 
     <!-- Paso 4: Mensaje personalizado -->
     <div *ngIf="step === 4" class="package-creator__step">
-      <h2 class="package-creator__step-title">4. Agrega una carta con mensaje (Opcional)</h2>
-      <div class="message-card-options">
-        <label>
-          <input type="checkbox" [(ngModel)]="includeMessage" (change)="onMessageToggle()">
-          Deseo agregar una carta con mensaje
-        </label>
-        <textarea
-          class="input-text"
-          rows="5"
-          placeholder="Escribe tu mensaje aquí..."
-          [(ngModel)]="message"
-          [disabled]="!includeMessage"
-          maxlength="200"
-          [style.display]="includeMessage ? 'block' : 'none'">
-        </textarea>
-        <p class="message-card-limit" *ngIf="includeMessage">
-          {{ message.length }}/200 caracteres
-        </p>
+      <div class="message-card-header">
+        <i class="fa fa-envelope-open-text"></i>
+        <span>4. Agrega una carta con mensaje (Opcional)</span>
       </div>
-
+      <div class="message-card-options">
+        <label class="message-checkbox">
+          <input type="checkbox" [(ngModel)]="includeMessage" (change)="onMessageToggle()">
+          <span>Deseo agregar una carta con mensaje</span>
+        </label>
+        <div class="message-area-wrapper" [class.disabled]="!includeMessage">
+          <textarea
+            class="input-text message-textarea"
+            rows="5"
+            placeholder="Escribe tu mensaje aquí... (máx. 200 caracteres)"
+            [(ngModel)]="message"
+            [disabled]="!includeMessage"
+            maxlength="200">
+          </textarea>
+          <div class="message-footer" *ngIf="includeMessage">
+            <span class="message-limit">
+              <i class="fa fa-pen-nib"></i> {{ message.length }}/200
+            </span>
+            <span class="message-tip">
+              <i class="fa fa-lightbulb"></i> ¡Un mensaje bonito hace tu paquete más especial!
+            </span>
+          </div>
+        </div>
+      </div>
       <div class="step-actions">
         <button class="btn btn--secondary" (click)="goBack()">Atrás</button>
         <button class="btn btn--primary" (click)="goToConfirmationStep()">
@@ -249,7 +265,7 @@
         <h3>Resumen del Paquete</h3>
         <div class="summary-grid">
           <div class="summary-section">
-            <h4>Tipo de Paquete</h4>
+            <h4><i class="fa fa-box"></i> Tipo de Paquete</h4>
             <p>{{ selectedPackageType === 'small' ? 'Pequeño' : selectedPackageType === 'medium' ? 'Mediano' : 'Grande' }}</p>
           </div>
 
