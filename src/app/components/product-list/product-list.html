@@ -1,14 +1,24 @@
 <section class="product-list">
+  <!-- Mensaje de la aplicación (éxito/error/advertencia) -->
+  <div *ngIf="message.text" [ngClass]="{
+    'alert': true,
+    'alert-success': message.type === 'success',
+    'alert-danger': message.type === 'error',
+    'alert-warning': message.type === 'warning'
+  }" class="mt-3" style="width: 100%; text-align: center; margin: 15px auto;">
+    {{ message.text }}
+  </div>
+
   @for(producto of productos$ | async; track producto.nombre){
-  <app-product-card
-    [imagenUrl]="producto.imagenUrl"
-    [nombre]="producto.nombre"
-    [precio]="producto.precio"
-  >
-  </app-product-card>
+    <app-product-card
+      [id]="producto.id"
+      [imagenUrl]="producto.imagenUrl"
+      [nombre]="producto.nombre"
+      [precio]="producto.precio"
+      (agregarAlCarrito)="agregarProductoAlCarrito($event)"
+    >
+    </app-product-card>
   }@empty{
-  <h1>El arreglo esta vacío</h1>
+    <h1>El arreglo esta vacío</h1>
   }
 </section>
-
-

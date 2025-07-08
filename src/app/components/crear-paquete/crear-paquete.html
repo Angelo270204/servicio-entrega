@@ -2,6 +2,16 @@
   <div class="container">
     <h1 class="package-creator__title">Crea tu Paquete Personalizado</h1>
 
+    <!-- Mensaje de la aplicación (éxito/error/advertencia) -->
+    <div *ngIf="appMessage.text" [ngClass]="{
+      'validation-messages': true,
+      'success': appMessage.type === 'success',
+      'error': appMessage.type === 'error',
+      'suggestion': appMessage.type === 'warning'
+    }" style="text-align: center; margin-bottom: 20px;">
+      {{ appMessage.text }}
+    </div>
+
     <!-- Indicador de progreso -->
     <div class="progress-indicator">
       <div class="progress-step" [class.active]="step >= 1" [class.completed]="step > 1">
@@ -68,7 +78,7 @@
       <h2 class="package-creator__step-title">
         2. Elige los productos para tu paquete {{ selectedPackageType }}
       </h2>
-      
+
       <!-- Información del paquete seleccionado -->
       <div class="package-info" *ngIf="packageLimits">
         <p><strong>Límites del paquete:</strong> Máximo {{ packageLimits.maxProductos }} productos</p>
@@ -128,7 +138,7 @@
           <p>Cargando productos...</p>
         </ng-template>
       </div>
-      
+
       <div class="step-actions">
         <button class="btn btn--secondary" (click)="goBack()">Atrás</button>
         <button
@@ -181,18 +191,18 @@
           </label>
           <label class="event-option event-option--other">
             <input type="radio" name="event-type" value="other" [(ngModel)]="selectedEvent"> Otro:
-            <input type="text" 
-                   class="input-text" 
+            <input type="text"
+                   class="input-text"
                    [(ngModel)]="customEvent"
                    [disabled]="selectedEvent !== 'other'"
                    placeholder="Especifica el evento">
           </label>
         </div>
       </div>
-      
+
       <div class="step-actions">
         <button class="btn btn--secondary" (click)="goBack()">Atrás</button>
-        <button class="btn btn--primary" 
+        <button class="btn btn--primary"
                 [disabled]="!selectedColor"
                 (click)="goToMessageStep()">
           Siguiente
@@ -205,13 +215,13 @@
       <h2 class="package-creator__step-title">4. Agrega una carta con mensaje (Opcional)</h2>
       <div class="message-card-options">
         <label>
-          <input type="checkbox" [(ngModel)]="includeMessage" (change)="onMessageToggle()"> 
+          <input type="checkbox" [(ngModel)]="includeMessage" (change)="onMessageToggle()">
           Deseo agregar una carta con mensaje
         </label>
-        <textarea 
-          class="input-text" 
-          rows="5" 
-          placeholder="Escribe tu mensaje aquí..." 
+        <textarea
+          class="input-text"
+          rows="5"
+          placeholder="Escribe tu mensaje aquí..."
           [(ngModel)]="message"
           [disabled]="!includeMessage"
           maxlength="200"
@@ -221,7 +231,7 @@
           {{ message.length }}/200 caracteres
         </p>
       </div>
-      
+
       <div class="step-actions">
         <button class="btn btn--secondary" (click)="goBack()">Atrás</button>
         <button class="btn btn--primary" (click)="goToConfirmationStep()">
@@ -233,7 +243,7 @@
     <!-- Paso 5: Confirmación y dirección -->
     <div *ngIf="step === 5" class="package-creator__step">
       <h2 class="package-creator__step-title">5. Confirma tu paquete y dirección de envío</h2>
-      
+
       <!-- Resumen del paquete -->
       <div class="package-summary">
         <h3>Resumen del Paquete</h3>
@@ -242,7 +252,7 @@
             <h4>Tipo de Paquete</h4>
             <p>{{ selectedPackageType === 'small' ? 'Pequeño' : selectedPackageType === 'medium' ? 'Mediano' : 'Grande' }}</p>
           </div>
-          
+
           <div class="summary-section">
             <h4>Productos ({{ selectedProducts.length }})</h4>
             <ul class="product-summary-list">
@@ -251,14 +261,14 @@
               </li>
             </ul>
           </div>
-          
+
           <div class="summary-section">
             <h4>Personalización</h4>
             <p><strong>Color:</strong> {{ selectedColor }}</p>
             <p><strong>Evento:</strong> {{ selectedEvent === 'none' ? 'Ninguno' : selectedEvent === 'other' ? customEvent : selectedEvent }}</p>
             <p *ngIf="includeMessage"><strong>Mensaje incluido:</strong> Sí</p>
           </div>
-          
+
           <div class="summary-section total-section">
             <h4>Total</h4>
             <p class="total-price">S/ {{ totalPrice.toFixed(2) }}</p>
@@ -269,23 +279,23 @@
       <!-- Dirección de envío -->
       <div class="shipping-address">
         <h3>Dirección de Envío</h3>
-        <textarea 
-          class="input-text address-input" 
-          rows="3" 
+        <textarea
+          class="input-text address-input"
+          rows="3"
           placeholder="Ingresa tu dirección completa de envío..."
           [(ngModel)]="direccionEnvio"
           required>
         </textarea>
       </div>
-      
+
       <div class="step-actions">
         <button class="btn btn--secondary" (click)="goBack()">Atrás</button>
-        <button 
+        <button
           class="btn btn--primary btn--large create-package-final"
           [disabled]="!canCreatePackage || isCreating"
           (click)="crearPaquete()">
           <span *ngIf="isCreating" class="loading-spinner">⏳</span>
-          <span class="btn__icon">✨</span> 
+          <span class="btn__icon">✨</span>
           {{ isCreating ? 'Creando Paquete...' : 'Crear y Enviar Paquete' }}
         </button>
       </div>

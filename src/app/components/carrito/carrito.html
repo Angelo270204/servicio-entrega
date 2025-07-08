@@ -1,0 +1,67 @@
+<section class="carrito-section">
+  <div class="container">
+    <h1 class="package-creator__title">🛒 Mi Carrito</h1>
+
+    <!-- Contenido principal del carrito, simulando un "paso" -->
+    <div class="package-creator__step">
+      <h2 class="package-creator__step-title">
+        <i class="fa-solid fa-cart-shopping"></i> Tus Productos en el Carrito
+      </h2>
+
+      <!-- Mensaje de la aplicación (éxito/error/advertencia) -->
+      <div *ngIf="message.text" [ngClass]="{
+        'alert': true,
+        'alert-success': message.type === 'success',
+        'alert-danger': message.type === 'error',
+        'alert-warning': message.type === 'warning'
+      }" class="mt-3">
+        {{ message.text }}
+      </div>
+
+      <!-- Si no hay productos en el carrito -->
+      <div *ngIf="carrito.length === 0" class="alert alert-info mt-4">
+        No tienes productos en el carrito. ¡Agrega productos desde el Home!
+      </div>
+
+      <!-- Lista de productos en el carrito -->
+      <form *ngIf="carrito.length > 0">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Producto</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of carrito">
+              <td>
+                <input type="checkbox" [(ngModel)]="producto.seleccionado" name="seleccionado{{producto.id}}" />
+              </td>
+              <td>{{ producto.nombre }}</td>
+              <td>{{ producto.cantidad }}</td>
+              <td>S/ {{ producto.precio | number:'1.2-2' }}</td>
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarDelCarrito(producto)">
+                  Quitar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Acciones para los productos seleccionados -->
+        <div class="d-flex gap-2 mt-3">
+          <button type="button" class="btn btn-success" [disabled]="!anyProductSelected" (click)="comprarSeleccionados()">
+            Comprar seleccionados
+          </button>
+          <button type="button" class="btn btn-primary" [disabled]="!anyProductSelected" (click)="crearPaqueteSeleccionados()">
+            Crear paquete con seleccionados
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

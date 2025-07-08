@@ -1,0 +1,43 @@
+.carrito-container {
+  padding: 2rem 0;
+}
+
+.table {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.btn {
+  min-width: 120px;
+}
+
+.alert-info {
+  font-size: 1.1rem;
+  border-radius: 8px;
+}
+
+.carrito-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .table {
+    font-size: 0.95rem;
+  }
+  .btn {
+    min-width: 90px;
+    font-size: 0.95rem;
+  }
+  .carrito-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
