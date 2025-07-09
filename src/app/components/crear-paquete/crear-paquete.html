@@ -10,6 +10,13 @@
       'suggestion': appMessage.type === 'warning'
     }" style="text-align: center; margin-bottom: 20px;">
       {{ appMessage.text }}
+      <button 
+        *ngIf="appMessage.type === 'success'" 
+        class="btn btn--primary" 
+        style="margin-left: 16px;" 
+        routerLink="/historial">
+        Ver Historial de Envíos
+      </button>
     </div>
 
     <!-- Indicador de progreso -->
@@ -30,13 +37,9 @@
         <span class="step-number">4</span>
         <span class="step-label">Mensaje</span>
       </div>
-      <div class="progress-step" [class.active]="step >= 5" [class.completed]="step > 5">
+      <div class="progress-step" [class.active]="step === 5">
         <span class="step-number">5</span>
         <span class="step-label">Confirmar</span>
-      </div>
-      <div class="progress-step" [class.active]="step === 6">
-        <span class="step-number">6</span>
-        <span class="step-label">¡Listo!</span>
       </div>
     </div>
 
@@ -314,28 +317,6 @@
           <span class="btn__icon">✨</span>
           {{ isCreating ? 'Creando Paquete...' : 'Crear y Enviar Paquete' }}
         </button>
-      </div>
-    </div>
-
-    <!-- Paso 6: Confirmación exitosa -->
-    <div *ngIf="step === 6 && showConfirmation" class="package-creator__step success-step">
-      <div class="success-animation">
-        <div class="success-icon">✅</div>
-        <h2 class="success-title">¡Paquete Creado y Enviado Exitosamente!</h2>
-        <p class="success-message">Tu paquete ha sido procesado y está en camino.</p>
-        <div class="success-details">
-          <p><strong>ID del Paquete:</strong> {{ createdPackageId }}</p>
-          <p><strong>Total:</strong> S/ {{ totalPrice.toFixed(2) }}</p>
-          <p><strong>Productos:</strong> {{ selectedProducts.length }} artículos</p>
-        </div>
-        <div class="success-actions">
-          <button class="btn btn--primary" (click)="verHistorial()">
-            Ver Historial de Envíos
-          </button>
-          <button class="btn btn--secondary" (click)="crearOtroPaquete()">
-            Crear Otro Paquete
-          </button>
-        </div>
       </div>
     </div>
 

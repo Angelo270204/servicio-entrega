@@ -211,9 +211,7 @@ export class CrearPaqueteComponent implements OnInit { // Implementa OnInit
   }
 
   async crearPaquete() {
-    if (!this.canCreatePackage || !this.selectedPackageType) {
-      return;
-    }
+    if (!this.canCreatePackage || !this.selectedPackageType) return;
     this.isCreating = true;
     try {
       const paqueteData = {
@@ -227,22 +225,18 @@ export class CrearPaqueteComponent implements OnInit { // Implementa OnInit
         }
       };
 
-      console.log('Creando paquete...', paqueteData);
       const paquete = await this.paqueteService.crearPaquete(paqueteData).toPromise();
-      console.log('Paquete creado:', paquete);
 
       if (paquete) {
-        const envio = await this.paqueteService.enviarPaquete(paquete.id, this.direccionEnvio).toPromise();
-        console.log('Envío realizado:', envio);
-
+        await this.paqueteService.enviarPaquete(paquete.id, this.direccionEnvio).toPromise();
         this.createdPackageId = paquete.id;
-        this.showConfirmation = true;
-        this.step = 6;
-        this.showMessage('Paquete creado y envío iniciado con éxito.', 'success'); // Mensaje de éxito
+        this.showConfirmation = false; 
+        this.showMessage('¡Paquete creado y enviado exitosamente!', 'success');
+        // Opcional: puedes limpiar el formulario aquí si lo deseas
+        this.crearOtroPaquete();
       }
     } catch (error) {
-      console.error('Error al crear el paquete:', error);
-      this.showMessage('Hubo un error al crear el paquete. Por favor, inténtalo de nuevo.', 'error'); // Mensaje de error
+      this.showMessage('Hubo un error al crear el paquete. Por favor, inténtalo de nuevo.', 'error');
     } finally {
       this.isCreating = false;
     }
@@ -267,7 +261,7 @@ export class CrearPaqueteComponent implements OnInit { // Implementa OnInit
     this.validationSuggestions = [];
     this.showConfirmation = false;
     this.createdPackageId = null;
-    this.clearAppMessage(); // Limpiar el mensaje de la aplicación
+    this.clearAppMessage(); 
   }
 
   goBack() {
@@ -281,7 +275,7 @@ export class CrearPaqueteComponent implements OnInit { // Implementa OnInit
    * @param text El texto del mensaje.
    * @param type El tipo de mensaje ('success', 'error', 'warning').
    */
-  showMessage(text: string, type: 'success' | 'error' | 'warning') {
+  showMessage(text: string, type: 'success' | 'error' | 'warning' | '') {
     this.appMessage = { text, type };
     setTimeout(() => {
       this.clearAppMessage();
