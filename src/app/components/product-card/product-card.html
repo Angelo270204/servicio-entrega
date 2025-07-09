@@ -2,7 +2,5 @@
   <img [src]="imagenUrl" />
   <h3>{{nombre}}</h3>
   <p>S/ {{precio}}</p>
-  <button class="add-to-cart">Agregar al carrito</button>
+  <button class="add-to-cart" (click)="onAgregar()">Agregar al carrito</button>
 </article>
-
-
