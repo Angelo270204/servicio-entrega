@@ -3,3 +3,17 @@ body {
   box-sizing: border-box;
   margin: 0 auto;
 }
+/* Estilos para la notificación MatSnackBar */
+/* Asegura que la notificación no sea transparente y tenga un color amarillo tipo Amazon */
+.success-snackbar {
+  background-color: #FF9900 !important; /* Color amarillo tipo Amazon */
+  color: #000000 !important; /* Color del texto negro para mejor contraste */
+  border-radius: 8px; /* Bordes redondeados */
+  opacity: 1 !important; /* Asegura que la opacidad sea completa (no transparente) */
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12); /* Sombra para que se vea más como una tarjeta */
+
+  /* Estilo para el botón de acción "Cerrar" */
+  .mat-simple-snackbar-action {
+    color: #000000 !important; /* Asegura que el texto del botón sea negro */
+  }
+}

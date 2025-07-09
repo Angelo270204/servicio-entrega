@@ -4,11 +4,13 @@ import { ProductoService } from "../../services/producto";
 import { Observable } from "rxjs";
 import { ProductCardComponent } from "../product-card/product-card";
 import { CommonModule } from "@angular/common";
+// Importa MatSnackBar y MatSnackBarModule (necesitarías instalar Angular Material)
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: "app-product-list",
   standalone: true,
-  imports: [ProductCardComponent, CommonModule],
+  imports: [ProductCardComponent, CommonModule, MatSnackBarModule], // Agrega MatSnackBarModule aquí
   templateUrl: "./product-list.html",
   styleUrls: ["./product-list.scss"],
 })
@@ -16,37 +18,47 @@ export class ProductList {
   productos$: Observable<Producto[]> =
     inject(ProductoService).obtenerProductos();
 
-  message: { text: string, type: 'success' | 'error' | 'warning' | '' } = { text: '', type: '' };
+  // Elimina la propiedad 'message' si usas MatSnackBar
+  // message: { text: string, type: 'success' | 'error' | 'warning' | '' } = { text: '', type: '' };
+
+  // Inyecta MatSnackBar
+  private _snackBar = inject(MatSnackBar);
 
   agregarProductoAlCarrito(producto: {id: string, nombre: string, precio: number, imagenUrl: string}) {
     let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
-    // Evitar duplicados: si ya existe, suma cantidad
+    let currentQuantity = 0;
     const idx = carrito.findIndex((p: any) => p.id === producto.id);
     if (idx > -1) {
       carrito[idx].cantidad += 1;
+      currentQuantity = carrito[idx].cantidad;
     } else {
       carrito.push({ ...producto, cantidad: 1 });
+      currentQuantity = 1;
     }
     localStorage.setItem('carrito', JSON.stringify(carrito));
-    this.showMessage('Producto agregado al carrito', 'success'); // Reemplazado alert()
+
+    // Usa MatSnackBar para mostrar la notificación
+    this._snackBar.open(
+      `Se agregó ${producto.nombre}. Cantidad actual en carrito: ${currentQuantity}`,
+      'Cerrar', // Texto del botón de acción (opcional)
+      {
+        duration: 3000, // Duración en milisegundos
+        horizontalPosition: 'end', // 'start' | 'center' | 'end' | 'left' | 'right'
+        verticalPosition: 'top', // 'top' | 'bottom'
+        panelClass: ['success-snackbar'] // Opcional: para estilos personalizados
+      }
+    );
   }
 
-  /**
-   * Muestra un mensaje en la interfaz de usuario.
-   * @param text El texto del mensaje.
-   * @param type El tipo de mensaje ('success', 'error', 'warning').
-   */
-  showMessage(text: string, type: 'success' | 'error' | 'warning') {
-    this.message = { text, type };
-    setTimeout(() => {
-      this.clearMessage();
-    }, 3000); // El mensaje desaparece después de 3 segundos
-  }
+  // Estos métodos ya no serían necesarios si usas MatSnackBar para las notificaciones
+  // showMessage(text: string, type: 'success' | 'error' | 'warning') {
+  //   this.message = { text, type };
+  //   setTimeout(() => {
+  //     this.clearMessage();
+  //   }, 3000);
+  // }
 
-  /**
-   * Limpia el mensaje mostrado en la interfaz.
-   */
-  clearMessage() {
-    this.message = { text: '', type: '' };
-  }
+  // clearMessage() {
+  //   this.message = { text: '', type: '' };
+  // }
 }

@@ -39,6 +39,18 @@ export class CarritoComponent {
     this.showMessage('Producto eliminado del carrito.', 'success');
   }
 
+  // Método para manejar el cambio de cantidad del producto
+  onCantidadChange(producto: ProductoCarrito) {
+    // Asegurarse de que la cantidad no sea menor que 1
+    if (producto.cantidad < 1) {
+      producto.cantidad = 1; // Establece la cantidad mínima en 1
+      this.showMessage('La cantidad mínima es 1.', 'warning');
+    } else {
+      this.showMessage(`Cantidad de ${producto.nombre} actualizada a ${producto.cantidad}.`, 'success');
+    }
+    this.guardarCarrito(); // Guarda los cambios en localStorage
+  }
+
   comprarSeleccionados() {
     const seleccionados = this.carrito.filter(p => p.seleccionado);
     if (seleccionados.length > 0) {
