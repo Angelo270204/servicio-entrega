@@ -109,4 +109,14 @@ export class HistorialEnviosComponent implements OnInit {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.historialEnvios$.subscribe(envios => this.ordenarEnvios(envios));
   }
+
+  eliminarEnvio(envio: HistorialEnvio, event: Event) {
+    event.stopPropagation();
+    if (confirm('¿Estás seguro de eliminar este envío?')) {
+      this.paqueteService.eliminarEnvio(envio.numeroSeguimiento).subscribe(() => {
+        // El servicio actualiza el observable, así que solo necesitas volver a ordenar
+        this.paqueteService.obtenerHistorialEnvios().subscribe(envios => this.ordenarEnvios(envios));
+      });
+    }
+  }
 }

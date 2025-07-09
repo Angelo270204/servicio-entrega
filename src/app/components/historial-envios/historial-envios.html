@@ -37,7 +37,6 @@
             class="envio-card" 
             *ngFor="let envio of envios"
             (click)="verDetalles(envio)">
-            
             <div class="envio-header">
               <div class="envio-info">
                 <h3 class="envio-id">{{ envio.numeroSeguimiento }}</h3>
@@ -78,6 +77,11 @@
 
             <button class="btn btn--outline ver-detalles-btn">
               Ver Detalles Completos
+            </button>
+            <button 
+              class="btn btn--danger eliminar-envio-btn"
+              (click)="eliminarEnvio(envio, $event)">
+              Eliminar
             </button>
           </article>
         </div>

@@ -195,6 +195,15 @@ export class PaqueteService {
     }
   }
 
+  eliminarEnvio(numeroSeguimiento: string): Observable<boolean> {
+    const historial = this.historialSubject.value.filter(
+      envio => envio.numeroSeguimiento !== numeroSeguimiento
+    );
+    this.historialSubject.next(historial);
+    this.guardarEnLocalStorage();
+    return of(true);
+  }
+
   obtenerPaquetes(): Observable<Paquete[]> {
     return this.paquetesSubject.asObservable();
   }
