@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Paquete, HistorialEnvio } from '../models/paquete.model';
 import { Producto } from '../models/producto.model';
@@ -118,43 +118,32 @@ export class PaqueteService {
   enviarPaquete(paqueteId: string, direccionEnvio: string): Observable<HistorialEnvio> {
     const paquetes = this.paquetesSubject.value;
     const paquete = paquetes.find(p => p.id === paqueteId);
-
     if (!paquete) {
-      throw new Error('Paquete no encontrado');
+      return throwError(() => new Error('Paquete no encontrado'));
     }
 
-    // Actualizar estado del paquete
-    paquete.estado = 'enviado';
-    paquete.direccionEnvio = direccionEnvio;
-    this.paquetesSubject.next(paquetes);
-
-    // Crear registro en historial
     const nuevoEnvio: HistorialEnvio = {
       id: this.generarId(),
-      paquete: { ...paquete },
-      fechaEnvio: new Date(),
-      numeroSeguimiento: this.generarNumeroSeguimiento(),
+      paquete,
+      direccionEnvio,
       estado: 'enviado',
+      fechaEnvio: new Date(),
+      numeroSeguimiento: this.generarNumeroSeguimiento(), 
       actualizaciones: [
         {
           fecha: new Date(),
           estado: 'enviado',
-          descripcion: 'Paquete enviado desde el centro de distribución',
-          ubicacion: 'Centro de Distribución Lima'
+          descripcion: 'El paquete ha sido enviado.',
+          ubicacion: 'Centro de distribución'
         }
       ]
     };
 
-    const historialActual = this.historialSubject.value;
-    historialActual.push(nuevoEnvio);
-    this.historialSubject.next(historialActual);
+    const historial = [...this.historialSubject.value, nuevoEnvio];
+    this.historialSubject.next(historial);
     this.guardarEnLocalStorage();
 
-    // Simular actualizaciones de seguimiento
-    this.simularActualizacionesSeguimiento(nuevoEnvio.id);
-
-    // Simula una respuesta de envío exitosa
-    return of(nuevoEnvio).pipe(delay(1000));
+    return of(nuevoEnvio).pipe(delay(1000)); // Simula retardo de red
   }
 
   private simularActualizacionesSeguimiento(envioId: string) {

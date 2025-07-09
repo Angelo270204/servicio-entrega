@@ -23,6 +23,7 @@ export interface HistorialEnvio {
   fechaEnvio: Date;
   numeroSeguimiento: string;
   estado: 'enviado' | 'en_transito' | 'entregado';
+  direccionEnvio: string; 
   actualizaciones: {
     fecha: Date;
     estado: string;

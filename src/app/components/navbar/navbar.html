@@ -16,15 +16,31 @@
       <span class="bold-text">Chimbote</span>
     </div>
   </div>
-  <div class="navbar-search">
-    <select class="search-category">
+  <div
+    class="navbar-search"
+    style="display: flex; align-items: center;"
+  >
+    <select class="search-category"
+      [ngModel]="selectedCategory$.value"
+      (ngModelChange)="onCategoryChange($event)">
       <option value="all">Todos</option>
       <option value="electronics">Electrónica</option>
       <option value="books">Libros</option>
-      <!-- Agrega más categorías si quieres -->
+      <option value="audio">Audio</option>
+      <option value="videojuegos">Videojuegos</option>
+      <option value="computadoras">Computadoras</option>
+      <option value="cocina">Cocina</option>
+      <option value="accesorios">Accesorios</option>
+      <option value="fotografía">Fotografía</option>
     </select>
-    <input type="text" placeholder="Buscar en Amazon..." />
-    <button class="search-btn">
+    <input
+      type="text"
+      placeholder="Buscar en Amazon..."
+      [ngModel]="searchTerm$.value"
+      (ngModelChange)="onSearchTermChange($event)"
+      name="searchTerm"
+    />
+    <button class="search-btn" (click)="onSearchTermChange(searchTerm$.value)">
       <i class="fa-solid fa-magnifying-glass"></i>
     </button>
   </div>
@@ -58,3 +74,10 @@
     </button>
   </div>
 </nav>
+
+<!-- Ejemplo de mostrar resultados filtrados -->
+<ul *ngIf="(productosFiltrados$ | async) as productos">
+  <li *ngFor="let producto of productos">
+    {{ producto.nombre }} - {{ producto.categoria }}
+  </li>
+</ul>
